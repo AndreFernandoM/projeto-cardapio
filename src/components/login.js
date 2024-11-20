@@ -35,8 +35,8 @@ const Login = () => {
         <p className="signup-link">
           Não possue uma conta? <Link to="/signup">Cadastre-se</Link>
         </p>
-        <p className="forget-password">
-          Esqueci minha senha! <a href="">Recuperar</a>
+        <p className="forgot-password">
+          Esqueci minha senha! <Link to="/forgot-password">Recuperar</Link>{" "}
         </p>
       </div>
     </div>

@@ -92,17 +92,17 @@
   text-decoration: underline;
 }
 
-.forget-password {
+.forgot-password {
   margin-top: 10px;
   font-size: 14px;
   color: #666;
 }
 
-.forget-password a {
+.forgot-password a {
   color: #2575fc;
   text-decoration: none;
 }
 
-.forget-password a:hover {
+.forgot-password a:hover {
   text-decoration: underline;
 }
