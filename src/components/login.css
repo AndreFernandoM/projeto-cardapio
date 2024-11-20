@@ -23,25 +23,29 @@
 }
 
 .logo {
-  background: #e6e6e6;
-  height: 50px;
-  width: 50px;
+  height: 80px;
+  width: 80px;
   display: flex;
   justify-content: center;
   align-items: center;
   margin: 0 auto 20px auto;
   border-radius: 50%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adiciona leve sombra */
 }
 
 .logo span {
-  display: inline-block;
-  width: 90px;
+  width: 70px;
   height: 70px;
-  background-image: url("/public/imagens/logo.webp");
+  background-image: url("/public/imagens/logo1.webp");
   background-size: cover;
-  background-position: center;
   border-radius: 50%;
+  transition: transform 0.3s ease;
 }
+
+.logo span:hover {
+  transform: scale(1.1);
+}
+
 .input-group {
   margin-bottom: 15px;
 }
