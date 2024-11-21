@@ -38,6 +38,7 @@
   height: 70px;
   background-image: url("/public/imagens/logo1.webp");
   background-size: cover;
+
   border-radius: 50%;
   transition: transform 0.3s ease;
 }
