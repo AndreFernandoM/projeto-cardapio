@@ -35,6 +35,10 @@
   color: white;
 }
 
+.menu-item-image{
+  padding-right: 10px;
+}
+
 .menu-items {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -51,7 +55,11 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s, box-shadow 0.2s;
 }
-
+.menu-item2{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 .menu-item:hover {
   transform: scale(1.05);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
