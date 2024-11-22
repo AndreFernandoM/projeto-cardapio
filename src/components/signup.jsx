@@ -36,7 +36,7 @@ const Signup = () => {
       },
       body: JSON.stringify(formData),
     })
-      .then((response) => response.text()) // Alterado para `.text()` para depuração
+      .then((response) => response.text())
       .then((data) => {
         console.log("Resposta do servidor:", data);
       })

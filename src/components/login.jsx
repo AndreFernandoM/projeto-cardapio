@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useRef } from "react";
+import { useNavigate, redirect } from "react-router";
 
 import "../css/login.css";
 import { Link } from "react-router-dom";
@@ -9,12 +9,13 @@ const Login = () => {
     email: "",
     senha: "",
   });
+  const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -39,7 +40,8 @@ const Login = () => {
         if (data.status === "success") {
           setIsLoggedIn(true);
           console.log("Usuário autenticado:", data.user);
-          alert(data.message);
+          // alert(data.message);
+          navigate("/menu");
         } else {
           alert(data.message);
         }
