@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./menu.css";
 import MenuIcon from "@mui/icons-material/Menu";
 import logo from "./logo1.webp";
+import { Link, useNavigate } from "react-router-dom";
 
 const Menu = () => {
   const [categories] = useState([
@@ -216,16 +217,42 @@ const Menu = () => {
   ]);
 
   const [activeCategory, setActiveCategory] = useState("Entradas");
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    // Lógica para logout, se necessário
+    alert("Você foi desconectado.");
+    navigate("/login");
+  };
 
   return (
     <div className="menu-container">
+      {}
+      <div
+        className="menu-icon-container"
+        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+      >
+        <MenuIcon className="menu-icon" />
+      </div>
+
+      {}
+      <div className={`dropdown-menu ${isDropdownOpen ? "active" : ""}`}>
+        <Link to="/carrinho" className="dropdown-menu-item">
+          Ir para Carrinho
+        </Link>
+        <button onClick={handleLogout} className="dropdown-menu-item">
+          Logout
+        </button>
+      </div>
+
       <header className="menu-header">
         <div className="logo-container">
           <img src={logo} alt="Logo da empresa" className="logo" />
         </div>
         <h1 className="menu-title">Cardápio</h1>
         <nav className="menu-navigation">
-          <MenuIcon className="menu-icon" />
           <div className="menu-categories">
             {categories.map((category) => (
               <button
