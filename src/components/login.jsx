@@ -1,8 +1,54 @@
-import React from "react";
+import React, { useState } from "react";
+import { useRef } from "react";
+
 import "../css/login.css";
 import { Link } from "react-router-dom";
 
 const Login = () => {
+  const [formData, setFormData] = useState({
+    email: "",
+    senha: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    fetch("http://localhost/projeto-cardapio/php/login.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: formData.email,
+        senha: formData.senha,
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Erro na resposta do servidor.");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (data.status === "success") {
+          setIsLoggedIn(true);
+          console.log("Usuário autenticado:", data.user);
+          alert(data.message);
+        } else {
+          alert(data.message);
+        }
+      })
+      .catch((error) => {
+        console.error("Erro na requisição:", error);
+      });
+  };
+
   return (
     <div className="login-container">
       <div className="login-box">
@@ -11,12 +57,15 @@ const Login = () => {
           <span></span>
         </div>
 
-        <form>
+        <form action="../php/login.php" method="post" onSubmit={handleSubmit}>
           <div className="input-group">
             <input
-              type="email"
+              type="text"
               placeholder="Email"
+              name="email"
               className="login-input"
+              value={formData.email}
+              onChange={handleChange}
               required
             />
           </div>
@@ -24,7 +73,10 @@ const Login = () => {
             <input
               type="password"
               placeholder="Senha"
+              name="senha"
               className="login-input"
+              value={formData.senha}
+              onChange={handleChange}
               required
             />
           </div>
