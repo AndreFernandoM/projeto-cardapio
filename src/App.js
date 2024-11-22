@@ -6,6 +6,11 @@ import Menu from "./components/menu";
 import ForgotPassword from "./components/ForgotPassword";
 
 const App = () => {
+  /*
+  
+  TODO: CONTEXT 
+  
+  */
   return (
     <Router>
       <Routes>

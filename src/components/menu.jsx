@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
+import { IconButton } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import Badge from "@mui/material/Badge";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import MenuIcon from "@mui/icons-material/Menu";
+import LogoutIcon from "@mui/icons-material/Logout";
+
 import logo from "../images/logo1.webp";
 
 import "../css/menu.css";
@@ -35,7 +41,7 @@ const Menu = () => {
       .then((data) => {
         if (data.status === "success") {
           console.log("Lista de categorias e itens:", data.categories);
-          setItens(data.categories); // Atualizar o estado com as categorias e itens
+          setItens(data.categories);
         } else {
           alert(data.message);
         }
@@ -47,23 +53,19 @@ const Menu = () => {
 
   return (
     <div className="menu-container">
-      {}
-      <div
-        className="menu-icon-container"
-        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-      >
-        <MenuIcon className="menu-icon" />
-      </div>
+      <Link to="/carrinho" className="carrinho-btn">
+        <IconButton aria-label="cart">
+          <StyledBadge badgeContent={4} color="primary">
+            <ShoppingCartIcon />
+          </StyledBadge>
+        </IconButton>
+      </Link>
 
-      {}
-      <div className={`dropdown-menu ${isDropdownOpen ? "active" : ""}`}>
-        <Link to="/carrinho" className="dropdown-menu-item">
-          Ir para Carrinho
-        </Link>
-        <button onClick={handleLogout} className="dropdown-menu-item">
-          Logout
-        </button>
-      </div>
+      <Link to="/login" className="logout-btn">
+        <IconButton aria-label="logout" color="gray">
+          <LogoutIcon />
+        </IconButton>
+      </Link>
 
       <header className="menu-header">
         <div className="logo-container">
@@ -113,3 +115,12 @@ const Menu = () => {
 };
 
 export default Menu;
+
+const StyledBadge = styled(Badge)(({ theme }) => ({
+  "& .MuiBadge-badge": {
+    right: -3,
+    top: 13,
+    border: `2px solid ${theme.palette.background.paper}`,
+    padding: "0 4px",
+  },
+}));
