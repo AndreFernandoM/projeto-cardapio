@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import "./menu.css";
+import "../css/menu.css";
 import MenuIcon from "@mui/icons-material/Menu";
-import logo from "./logo1.webp";
+import logo from "../images/logo1.webp";
 import { Link, useNavigate } from "react-router-dom";
 
 const Menu = () => {

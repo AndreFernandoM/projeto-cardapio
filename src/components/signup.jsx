@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./login.css";
+import "../css/login.css";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -29,14 +29,31 @@ const Signup = () => {
       alert("As senhas não coincidem!");
       return;
     }
-    console.log("Dados enviados:", formData);
+    fetch("http://localhost/projeto-cardapio/php/cadastro.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    })
+      .then((response) => response.text()) // Alterado para `.text()` para depuração
+      .then((data) => {
+        console.log("Resposta do servidor:", data);
+      })
+      .catch((error) => {
+        console.error("Erro ao enviar os dados:", error);
+      });
   };
 
   return (
     <div className="login-container">
       <div className="login-box">
         <h1 className="login-title">Cadastro</h1>
-        <form onSubmit={handleSubmit}>
+        <form
+          action="../php/cadastro.php"
+          method="post"
+          onSubmit={handleSubmit}
+        >
           <div className="input-group">
             <input
               type="text"
