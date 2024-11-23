@@ -1,8 +1,8 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Login from "./components/login";
-import Signup from "./components/signup";
-import Menu from "./components/menu";
+import Login from "./components/Login";
+import Signup from "./components/Signup";
+import Menu from "./components/Menu";
 import ForgotPassword from "./components/ForgotPassword";
 
 const App = () => {

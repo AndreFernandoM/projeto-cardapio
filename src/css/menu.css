@@ -75,6 +75,18 @@
   justify-content: space-between;
   align-items: center;
 }
+
+.menu-item-info-wrap-desc{
+  max-width: 200px;
+}
+.menu-item-info-desc{
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 50%;
+}
+
+
 .menu-item:hover {
   transform: scale(1.05);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);

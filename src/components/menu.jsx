@@ -1,28 +1,39 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-import { IconButton } from "@mui/material";
+import { Button, IconButton } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Badge from "@mui/material/Badge";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import MenuIcon from "@mui/icons-material/Menu";
 import LogoutIcon from "@mui/icons-material/Logout";
 
-import logo from "../images/logo1.webp";
+import ModalItem from "./ModalItem";
 
+import logo from "../images/logo1.webp";
 import "../css/menu.css";
 
 const Menu = () => {
   const [itens, setItens] = useState([]);
 
   const [activeCategory, setActiveCategory] = useState("Entradas");
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const navigate = useNavigate();
 
   const handleLogout = () => {
     // Lógica para logout, se necessário
     alert("Você foi desconectado.");
+  };
+
+  const handleOpenModal = (item) => {
+    setSelectedItem(item);
+    setModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
   };
 
   useEffect(() => {
@@ -92,7 +103,11 @@ const Menu = () => {
         {itens
           .find((category) => category.name === activeCategory)
           ?.items.map((item, index) => (
-            <div key={index} className="menu-item">
+            <div
+              key={index}
+              className="menu-item"
+              onClick={() => handleOpenModal(item)}
+            >
               <div className="menu-item2">
                 <img
                   className="menu-item-image"
@@ -103,13 +118,23 @@ const Menu = () => {
                 />
                 <div className="menu-item-info">
                   <h3>{item.name}</h3>
-                  <p>{item.description}</p>
+                  <div className="menu-item-info-wrap-desc">
+                    <p className="menu-item-info-desc">{item.description}</p>
+                  </div>
                 </div>
               </div>
+
               <span className="menu-item-price">R${item.price}</span>
             </div>
           ))}
       </div>
+      {modalOpen && (
+        <ModalItem
+          open={modalOpen}
+          item={selectedItem}
+          onClose={handleCloseModal}
+        />
+      )}
     </div>
   );
 };
