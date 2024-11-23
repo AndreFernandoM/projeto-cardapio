@@ -1,18 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./components/login";
 import Signup from "./components/signup";
 import Menu from "./components/menu";
 import ForgotPassword from "./components/ForgotPassword";
-import ItemDetalhes from "./components/ItemDetalhes";
+import ModalItem from "./components/ModalItem";
+
+// Exemplo de um item para testar
+const itemTeste = {
+  name: "Item Exemplo",
+  description: "Descrição do item de exemplo.",
+  price: "19.99",
+  foto: "https://via.placeholder.com/150", // Coloque o link da imagem aqui
+};
 
 const App = () => {
-  const itemTeste = {
-    nome: "Rodeio Duplo",
-    descricao:
-      "Um hambúrguer com duas carnes bovinas grelhadas, pão com gergelim, queijo derretido, onion rings, molho barbecue e maionese BK.",
-    preco: 17.92,
-    imagem: "/imagens/burger.jpg",
+  const [isModalOpen, setModalOpen] = useState(true); // Estado para controlar o modal
+
+  // Função para fechar o modal
+  const closeModal = () => {
+    setModalOpen(false);
   };
 
   return (
@@ -21,12 +28,13 @@ const App = () => {
         <Route path="/" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/menu" element={<Menu />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />{" "}
-        <Route
-          path="/item-detalhes"
-          element={<ItemDetalhes item={itemTeste} />}
-        />{" "}
+        <Route path="/forgot-password" element={<ForgotPassword />} />
       </Routes>
+
+      {/* Exibir o ModalItem diretamente quando o estado de modal estiver aberto */}
+      {isModalOpen && (
+        <ModalItem open={isModalOpen} item={itemTeste} onClose={closeModal} />
+      )}
     </Router>
   );
 };

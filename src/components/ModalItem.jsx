@@ -1,24 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import { Button } from "@mui/material";
-
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  borderRadius: "15px",
-  boxShadow: 24,
-  p: 4,
-};
+import { Button, IconButton, TextField } from "@mui/material";
+import { Add, Remove } from "@mui/icons-material";
+import "../css/ModalItem.css";
 
 export default function ModalItem({ open, item, onClose }) {
+  const [quantity, setQuantity] = useState(1);
+  const handleIncrease = () => setQuantity(quantity + 1);
+  const handleDecrease = () => setQuantity(quantity > 1 ? quantity - 1 : 1);
+
   const handleClick = () => {
-    console.log("clicou botei no carrinho hehe", item);
+    console.log(`Adicionado ${quantity} item(s) no carrinho:`, item);
+    onClose();
   };
 
   return (
@@ -28,19 +23,42 @@ export default function ModalItem({ open, item, onClose }) {
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <Box sx={style}>
-        <img src={item.foto} alt="https://placehold.co/300" />
-        <Typography id="modal-modal-title" variant="h6" component="h2">
+      <Box className="modal-item-container">
+        <img src={item.foto} alt={item.name} />
+        <Typography className="modal-item-title">
           {item?.name || "Item sem nome"}
         </Typography>
-        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+        <Typography className="modal-item-description">
           {item?.description || "Descrição indisponível"}
         </Typography>
-        <Typography sx={{ mt: 2, fontWeight: "bold" }}>
+        <Typography className="modal-item-price">
           Preço: R${item?.price || "0.00"}
         </Typography>
-        <Button variant="contained" onClick={handleClick}>
-          Contained
+
+        <div className="modal-item-quantity-container">
+          <IconButton onClick={handleDecrease} color="primary">
+            <Remove />
+          </IconButton>
+          <TextField
+            value={quantity}
+            variant="outlined"
+            size="small"
+            className="modal-item-quantity-input"
+            InputProps={{
+              readOnly: true,
+            }}
+          />
+          <IconButton onClick={handleIncrease} color="primary">
+            <Add />
+          </IconButton>
+        </div>
+
+        <Button
+          variant="contained"
+          className="modal-item-add-btn"
+          onClick={handleClick}
+        >
+          Adicionar ao Carrinho
         </Button>
       </Box>
     </Modal>
