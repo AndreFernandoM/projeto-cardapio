@@ -10,7 +10,7 @@ const Cart = () => {
       description: "Descrição do item de exemplo.",
       price: 19.99,
       quantity: 1,
-      foto: "https://via.placeholder.com/150",
+      foto: "https://placehold.co/150"
     },
 
     {
@@ -18,8 +18,8 @@ const Cart = () => {
       description: "Descrição do item de exemplo blabla.",
       price: 1.99,
       quantity: 1,
-      foto: "https://via.placeholder.com/150",
-    },
+      foto: "https://placehold.co/150"
+    }
   ]);
 
   const handleIncrease = (index) => {
@@ -94,7 +94,7 @@ const Cart = () => {
                       size="small"
                       className="cart-item-quantity-input"
                       InputProps={{
-                        readOnly: true,
+                        readOnly: true
                       }}
                     />
                     <IconButton
@@ -106,7 +106,7 @@ const Cart = () => {
                   </div>
                   <IconButton
                     onClick={() => handleRemove(index)}
-                    color="secondary"
+                    color="error"
                     className="cart-item-remove"
                   >
                     <Delete />
@@ -118,14 +118,14 @@ const Cart = () => {
         )}
         <div className="cart-summary">
           <Typography className="total-text">
-            Total: R${calculateTotal()}
+            <b>Total: R${calculateTotal()}</b>
           </Typography>
           <Button
             variant="contained"
             color="primary"
             className="cart-confirm-btn"
           >
-            Confirmar Pedido
+            <Typography variant="button">Confirmar Pedido</Typography>
           </Button>
         </div>
       </div>

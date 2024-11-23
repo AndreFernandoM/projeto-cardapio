@@ -1,41 +1,44 @@
 import React, { useState, useEffect } from "react";
+
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { Button, IconButton, TextField } from "@mui/material";
 import { Add, Remove } from "@mui/icons-material";
+import Typography from "@mui/material/Typography";
+
 import "../css/ModalItem.css";
 
-export default function ModalItem({ item }) {
+export default function ModalItem({ item, onClose }) {
   const [quantity, setQuantity] = useState(1);
+  console.log(item);
 
-  // Lógica para controle de quantidade
   const handleIncrease = () => setQuantity(quantity + 1);
   const handleDecrease = () => setQuantity(quantity > 1 ? quantity - 1 : 1);
 
-  // Função para adicionar o item ao carrinho
   const handleClick = () => {
     console.log(`Adicionado ${quantity} item(s) no carrinho:`, item);
   };
 
   return (
     <Modal
-      open={true} // O modal será sempre aberto enquanto esta rota estiver ativa
-      onClose={() => window.history.back()} // Volta para a página anterior quando fechar o modal
+      open={true}
+      onClose={onClose}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
       <Box className="modal-item-container">
         <img src={item.foto} alt={item.name} />
-        <Typography className="modal-item-title">
-          {item?.name || "Item sem nome"}
-        </Typography>
-        <Typography className="modal-item-description">
-          {item?.description || "Descrição indisponível"}
-        </Typography>
-        <Typography className="modal-item-price">
-          Preço: R${item?.price || "0.00"}
-        </Typography>
+        <div className="modal-item-infos">
+          <Typography variant="h5" gutterBottom className="modal-item-title">
+            {item?.name || "Item sem nome"}
+          </Typography>
+          <Typography variant="subtitle1" className="modal-item-description">
+            {item?.description || "Descrição indisponível"}
+          </Typography>
+          <Typography className="modal-item-price">
+            Preço: R${item?.price || "0.00"}
+          </Typography>
+        </div>
 
         <div className="modal-item-quantity-container">
           <IconButton onClick={handleDecrease} color="primary">
@@ -47,7 +50,7 @@ export default function ModalItem({ item }) {
             size="small"
             className="modal-item-quantity-input"
             InputProps={{
-              readOnly: true,
+              readOnly: true
             }}
           />
           <IconButton onClick={handleIncrease} color="primary">
@@ -58,9 +61,10 @@ export default function ModalItem({ item }) {
         <Button
           variant="contained"
           className="modal-item-add-btn"
+          color="primary"
           onClick={handleClick}
         >
-          Adicionar ao Carrinho
+          <Typography variant="button">Adicionar ao Carrinho</Typography>
         </Button>
       </Box>
     </Modal>

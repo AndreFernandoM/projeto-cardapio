@@ -1,9 +1,11 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import Login from "./components/login";
-import Signup from "./components/signup";
-import Menu from "./components/menu";
+
+import Login from "./components/Login";
+import Signup from "./components/Signup";
+import Menu from "./components/Menu";
 import ForgotPassword from "./components/ForgotPassword";
+
 import ModalItem from "./components/ModalItem";
 import Cart from "./components/Cart"; // Importando o componente Cart
 
@@ -11,7 +13,7 @@ const itemTeste = {
   name: "Item Exemplo",
   description: "Descrição do item de exemplo.",
   price: "19.99",
-  foto: "https://via.placeholder.com/150", // Coloque o link da imagem aqui
+  foto: "https://via.placeholder.com/150" // Coloque o link da imagem aqui
 };
 
 const App = () => {

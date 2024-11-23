@@ -40,8 +40,8 @@ const Menu = () => {
     fetch("http://localhost/projeto-cardapio/php/itens.php", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
-      },
+        "Content-Type": "application/json"
+      }
     })
       .then((response) => {
         if (!response.ok) {
@@ -146,6 +146,6 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
     right: -3,
     top: 13,
     border: `2px solid ${theme.palette.background.paper}`,
-    padding: "0 4px",
-  },
+    padding: "0 4px"
+  }
 }));

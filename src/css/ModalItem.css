@@ -15,6 +15,10 @@
   text-align: center;
 }
 
+.modal-item-container:focus-visible{
+  outline: -webkit-focus-ring-color auto 0px !important;
+}
+
 .modal-item-container img {
   width: 100%;
   max-height: 300px;
@@ -23,9 +27,17 @@
   box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
 }
 
+.modal-item-infos{
+  padding-top: 15px;
+  gap: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .modal-item-title {
   margin-top: 8px;
-  font-weight: 700;
+  /* font-weight: 700; */
   font-size: 1.6rem;
   color: #212121;
   letter-spacing: 0.5px;
@@ -80,21 +92,23 @@
 }
 
 .modal-item-add-btn {
-  margin-top: 24px;
+  margin-top: 15px !important;
   width: 100%;
-  background: linear-gradient(90deg, #ff8a65, #e53935);
+  background: linear-gradient(to right, #6a11cb, #2575fc);
   color: #fff;
   border: none;
   padding: 14px;
   font-size: 1.1rem;
   font-weight: 600;
   border-radius: 50px;
-  box-shadow: 0px 5px 15px rgba(255, 83, 83, 0.3);
   cursor: pointer;
   transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
+.MuiInputBase-root input{
+  text-align: center !important;
+}
+
 .modal-item-add-btn:hover {
-  background: linear-gradient(90deg, #e53935, #ff8a65);
-  box-shadow: 0px 8px 20px rgba(255, 83, 83, 0.5);
+  background: linear-gradient(to right, #2575fc, #6a11cb);
 }
