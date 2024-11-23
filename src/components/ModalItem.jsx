@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
@@ -6,20 +6,22 @@ import { Button, IconButton, TextField } from "@mui/material";
 import { Add, Remove } from "@mui/icons-material";
 import "../css/ModalItem.css";
 
-export default function ModalItem({ open, item, onClose }) {
+export default function ModalItem({ item }) {
   const [quantity, setQuantity] = useState(1);
+
+  // Lógica para controle de quantidade
   const handleIncrease = () => setQuantity(quantity + 1);
   const handleDecrease = () => setQuantity(quantity > 1 ? quantity - 1 : 1);
 
+  // Função para adicionar o item ao carrinho
   const handleClick = () => {
     console.log(`Adicionado ${quantity} item(s) no carrinho:`, item);
-    onClose();
   };
 
   return (
     <Modal
-      open={open}
-      onClose={onClose}
+      open={true} // O modal será sempre aberto enquanto esta rota estiver ativa
+      onClose={() => window.history.back()} // Volta para a página anterior quando fechar o modal
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
