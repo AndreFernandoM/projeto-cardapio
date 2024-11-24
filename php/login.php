@@ -28,7 +28,8 @@ if (!empty($email) && !empty($senha)) {
                 "message" => "Login realizado com sucesso!",
                 "user" => [
                     "nome" => $user['nome'],
-                    "email" => $user['email']
+                    "email" => $user['email'],
+                    "id" => $user['id'],
                 ]
             ]);
         } else {

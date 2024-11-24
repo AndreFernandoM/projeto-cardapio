@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import { Button, IconButton } from "@mui/material";
@@ -8,6 +8,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import LogoutIcon from "@mui/icons-material/Logout";
 
 import ModalItem from "./ModalItem";
+import { AuthContext } from "./AuthContext";
 
 import logo from "../images/logo1.webp";
 import "../css/menu.css";
@@ -20,10 +21,9 @@ const Menu = () => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
 
-  const navigate = useNavigate();
+  const { user } = useContext(AuthContext);
 
   const handleLogout = () => {
-    // Lógica para logout, se necessário
     alert("Você foi desconectado.");
   };
 
@@ -71,7 +71,7 @@ const Menu = () => {
           </StyledBadge>
         </IconButton>
       </Link>
-
+      {console.log("Usuário logado:", user)}
       <Link to="/login" className="logout-btn">
         <IconButton aria-label="logout" color="gray">
           <LogoutIcon />

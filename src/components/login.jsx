@@ -1,16 +1,15 @@
-import React, { useState } from "react";
-import { useNavigate, redirect } from "react-router";
-
-import "../css/login.css";
+import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 
+import { AuthContext } from "./AuthContext";
+
+import "../css/login.css";
+
 const Login = () => {
-  const [formData, setFormData] = useState({
-    email: "",
-    senha: "",
-  });
+  const [formData, setFormData] = useState({ email: "", senha: "" });
+  const { login } = useContext(AuthContext);
   const navigate = useNavigate();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -23,12 +22,12 @@ const Login = () => {
     fetch("http://localhost/projeto-cardapio/php/login.php", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json"
       },
       body: JSON.stringify({
         email: formData.email,
-        senha: formData.senha,
-      }),
+        senha: formData.senha
+      })
     })
       .then((response) => {
         if (!response.ok) {
@@ -38,9 +37,11 @@ const Login = () => {
       })
       .then((data) => {
         if (data.status === "success") {
-          setIsLoggedIn(true);
-          console.log("Usuário autenticado:", data.user);
-          // alert(data.message);
+          login({
+            id: data.user.id,
+            nome: data.user.nome,
+            email: data.user.email
+          });
           navigate("/menu");
         } else {
           alert(data.message);
