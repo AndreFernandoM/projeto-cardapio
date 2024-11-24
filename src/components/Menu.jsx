@@ -74,10 +74,11 @@ const Menu = () => {
           if (data.status === "success") {
             const pedidos = data.pedidos || [];
             const totalItems = pedidos.reduce(
-              (acc, item) => acc + parseInt(item.quantidade, 10),
+              (acc, item) => acc + parseInt(item.quantity, 10),
               0
             );
             setCartQuantity(totalItems);
+            console.log("total itens: ", totalItems, " ", pedidos);
           } else {
             console.error(data.message);
             setCartQuantity(0);
@@ -87,7 +88,7 @@ const Menu = () => {
           console.error("Erro ao carregar os itens do carrinho:", error);
         });
     }
-  }, [modalOpen, user.id]);
+  }, [modalOpen, user?.id]);
 
   return (
     <div className="menu-container">

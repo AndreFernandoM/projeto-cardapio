@@ -4,10 +4,21 @@ import { Add, Remove, Delete } from "@mui/icons-material";
 import "../css/Cart.css";
 import { AuthContext } from "./AuthContext";
 
+/*
+  TODO: 
+        4 items por pagina
+        deletar apaga no banco
+        Confirmar btn
+          confirmar bota finalizado 1
+          confirmar mensagem de "obg pela compra"
+          confirmar te leva pro menu
+
+ */
+
 const Cart = () => {
   const [cartQuantity, setCartQuantity] = useState(0);
+  const [pedidos, setPedidos] = useState([]);
   const { user } = useContext(AuthContext);
-  const [items, setItems] = useState([]);
 
   useEffect(() => {
     if (user?.id) {
@@ -26,13 +37,14 @@ const Cart = () => {
         })
         .then((data) => {
           if (data.status === "success") {
-            const pedidos = data.pedidos || [];
-            const totalItems = pedidos.reduce(
-              (acc, item) => acc + parseInt(item.quantidade, 10),
+            const pedidosAtualizados = data.pedidos || [];
+            setPedidos(pedidosAtualizados);
+
+            const totalItems = pedidosAtualizados.reduce(
+              (acc, item) => acc + parseInt(item.quantity, 10),
               0
             );
             setCartQuantity(totalItems);
-            console.log(totalItems, pedidos);
           } else {
             console.error(data.message);
             setCartQuantity(0);
@@ -42,29 +54,29 @@ const Cart = () => {
           console.error("Erro ao carregar os itens do carrinho:", error);
         });
     }
-  }, [user.id]);
+  }, [user?.id]);
 
   const handleIncrease = (index) => {
-    const newItems = [...items];
-    newItems[index].quantity += 1;
-    setItems(newItems);
+    const newPedidos = [...pedidos];
+    newPedidos[index].quantity += 1;
+    setPedidos(newPedidos);
   };
 
   const handleDecrease = (index) => {
-    const newItems = [...items];
-    if (newItems[index].quantity > 1) {
-      newItems[index].quantity -= 1;
-      setItems(newItems);
+    const newPedidos = [...pedidos];
+    if (newPedidos[index].quantity > 1) {
+      newPedidos[index].quantity -= 1;
+      setPedidos(newPedidos);
     }
   };
 
   const handleRemove = (index) => {
-    const newItems = items.filter((item, i) => i !== index);
-    setItems(newItems);
+    const newPedidos = pedidos.filter((_, i) => i !== index);
+    setPedidos(newPedidos);
   };
 
   const calculateTotal = () => {
-    return items
+    return pedidos
       .reduce((acc, item) => acc + item.price * item.quantity, 0)
       .toFixed(2);
   };
@@ -73,13 +85,13 @@ const Cart = () => {
     <div className="cart-container">
       <div className="cart-card">
         <Typography className="cart-title">Seu Carrinho</Typography>
-        {items.length === 0 ? (
+        {pedidos.length === 0 ? (
           <Typography className="empty-cart">
             Seu carrinho está vazio.
           </Typography>
         ) : (
           <div className="cart-items-list">
-            {items.map((item, index) => (
+            {pedidos.map((item, index) => (
               <div key={index} className="cart-item">
                 <div className="cart-item-left">
                   <img
@@ -92,7 +104,7 @@ const Cart = () => {
                       {item.name}
                     </Typography>
                     <Typography className="cart-item-description">
-                      {item.description}
+                      {item.descricao}
                     </Typography>
                   </div>
                 </div>
