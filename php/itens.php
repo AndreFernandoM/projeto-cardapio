@@ -8,7 +8,7 @@ include 'conn.php';
 
 $data = json_decode(file_get_contents("php://input"), true);
 
-$stmt = $conn->prepare("SELECT c.id AS idCategoria, c.nome AS categoria, i.nome, i.descricao, i.preco, i.foto 
+$stmt = $conn->prepare("SELECT c.id AS idCategoria, c.nome AS categoria, i.id, i.nome, i.descricao, i.preco, i.foto 
                         FROM tb_itens i
                         INNER JOIN tb_categoria c ON i.idCategoria = c.id");
 
@@ -32,6 +32,7 @@ if ($stmt) {
             }
 
             $categories[$idCategoria]["items"][] = [
+                "id"=> $item["id"],
                 "name" => $item['nome'],
                 "description" => $item['descricao'],
                 "foto" => $item['foto'],

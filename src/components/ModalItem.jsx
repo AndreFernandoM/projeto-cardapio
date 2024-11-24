@@ -1,23 +1,64 @@
-import React, { useState, useEffect } from "react";
-
+import React, { useState, useCallback } from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import { Button, IconButton, TextField } from "@mui/material";
 import { Add, Remove } from "@mui/icons-material";
 import Typography from "@mui/material/Typography";
-
 import "../css/ModalItem.css";
 
-export default function ModalItem({ item, onClose }) {
+export default function ModalItem({ item, onClose, userId, itemId }) {
   const [quantity, setQuantity] = useState(1);
-  console.log(item);
+  const [formData, setFormData] = useState({
+    idUsuario: userId,
+    idItem: itemId,
+    quantidade: 1,
+    preco: item?.price || 0,
+    finalizado: false
+  });
 
-  const handleIncrease = () => setQuantity(quantity + 1);
-  const handleDecrease = () => setQuantity(quantity > 1 ? quantity - 1 : 1);
+  const handleIncrease = useCallback(() => setQuantity((prev) => prev + 1), []);
+  const handleDecrease = useCallback(
+    () => setQuantity((prev) => (prev > 1 ? prev - 1 : 1)),
+    []
+  );
 
-  const handleClick = () => {
-    console.log(`Adicionado ${quantity} item(s) no carrinho:`, item);
-  };
+  const handleSubmit = useCallback(() => {
+    if (!userId) {
+      console.error("Erro: ID do usuário não encontrado.");
+      return;
+    }
+
+    const updatedFormData = {
+      ...formData,
+      idUsuario: userId,
+      quantidade: quantity
+    };
+
+    fetch("http://localhost/projeto-cardapio/php/carrinho.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(updatedFormData)
+    })
+      .then((response) => response.text())
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error("Erro ao enviar os dados:", error);
+      });
+  }, [userId, formData, quantity]);
+
+  const handleClick = useCallback(() => {
+    if (userId) {
+      handleSubmit();
+      alert("Item adicionado ao carrinho!");
+      onClose();
+    } else {
+      console.error("Erro: ID do usuário não encontrado.");
+    }
+  }, [handleSubmit, userId]);
 
   return (
     <Modal
@@ -49,9 +90,7 @@ export default function ModalItem({ item, onClose }) {
             variant="outlined"
             size="small"
             className="modal-item-quantity-input"
-            InputProps={{
-              readOnly: true
-            }}
+            InputProps={{ readOnly: true }}
           />
           <IconButton onClick={handleIncrease} color="primary">
             <Add />

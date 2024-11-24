@@ -72,7 +72,7 @@ const Menu = () => {
         </IconButton>
       </Link>
       {console.log("Usuário logado:", user)}
-      <Link to="/login" className="logout-btn">
+      <Link to="/" className="logout-btn">
         <IconButton aria-label="logout" color="gray">
           <LogoutIcon />
         </IconButton>
@@ -132,6 +132,8 @@ const Menu = () => {
         <ModalItem
           open={modalOpen}
           item={selectedItem}
+          userId={user.id}
+          itemId={selectedItem.id}
           onClose={handleCloseModal}
         />
       )}
