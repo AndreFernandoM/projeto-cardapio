@@ -12,7 +12,7 @@ $email = trim($data['email'] ?? '');
 $senha = trim($data['senha'] ?? '');
 
 if (!empty($email) && !empty($senha)) {
-    $stmt = $conn->prepare("SELECT * FROM tb_usuario WHERE email = ? AND senha = ?");
+    $stmt = $conn->prepare("SELECT * FROM tb_usuario WHERE email = ? AND senha = SHA2(?, 256)");
     
     if ($stmt) {
         $stmt->bind_param("ss", $email, $senha);

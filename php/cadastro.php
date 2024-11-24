@@ -4,10 +4,8 @@ header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
 header("Access-Control-Allow-Credentials: true");
 
-// Incluir o arquivo de conexão
 include 'conn.php';
 
-// Obter os dados do corpo da requisição
 $data = json_decode(file_get_contents("php://input"), true);
 
 if (!$data) {
@@ -15,7 +13,6 @@ if (!$data) {
     exit;
 }
 
-// Extrair os dados do array recebido
 $nome = trim($data['nome'] ?? '');
 $email = trim($data['email'] ?? '');
 $data_nascimento = $data['dataNascimento'] ?? '';
@@ -30,14 +27,12 @@ $complemento = trim($data['complemento'] ?? '');
 $cidade = trim($data['cidade'] ?? '');
 $estado = trim($data['estado'] ?? '');
 
-// Validar os campos obrigatórios
 if (empty($nome) || empty($email) || empty($senha)) {
     echo "Por favor, preencha todos os campos corretamente.";
     exit;
 }
 
-// Inserir os dados no banco de dados
-$stmt = $conn->prepare("INSERT INTO tb_usuario (nome, email, data_nascimento, telefone, senha, cep, rua, numero, bairro, complemento, cidade, estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+$stmt = $conn->prepare("INSERT INTO tb_usuario (nome, email, data_nascimento, telefone, senha, cep, rua, numero, bairro, complemento, cidade, estado) VALUES (?, ?, ?, ?,  SHA2(?, 256), ?, ?, ?, ?, ?, ?, ?)");
 
 if ($stmt) {
     $stmt->bind_param("ssssssssssss", $nome, $email, $data_nascimento, $telefone, $senha, $cep, $rua, $numero, $bairro, $complemento, $cidade, $estado);

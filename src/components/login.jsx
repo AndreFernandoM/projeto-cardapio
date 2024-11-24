@@ -88,10 +88,10 @@ const Login = () => {
           </button>
         </form>
         <p className="signup-link">
-          Não possue uma conta? <Link to="/signup">Cadastre-se</Link>
+          Não possue uma conta? <Link to="/cadastro">Cadastre-se</Link>
         </p>
         <p className="forgot-password">
-          Esqueci minha senha! <Link to="/forgot-password">Recuperar</Link>
+          Esqueci minha senha! <Link to="/esqueci-senha">Recuperar</Link>
         </p>
       </div>
     </div>

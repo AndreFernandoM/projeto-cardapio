@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "../css/login.css";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -15,13 +16,14 @@ const Signup = () => {
     bairro: "",
     complemento: "",
     cidade: "",
-    estado: "",
+    estado: ""
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -32,13 +34,13 @@ const Signup = () => {
     fetch("http://localhost/projeto-cardapio/php/cadastro.php", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json"
       },
-      body: JSON.stringify(formData),
+      body: JSON.stringify(formData)
     })
       .then((response) => response.text())
       .then((data) => {
-        console.log("Resposta do servidor:", data);
+        navigate("/");
       })
       .catch((error) => {
         console.error("Erro ao enviar os dados:", error);
