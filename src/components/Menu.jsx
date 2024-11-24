@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-import { Button, IconButton } from "@mui/material";
+import { IconButton } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Badge from "@mui/material/Badge";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
@@ -15,17 +15,11 @@ import "../css/menu.css";
 
 const Menu = () => {
   const [itens, setItens] = useState([]);
-
   const [activeCategory, setActiveCategory] = useState("Entradas");
-
   const [selectedItem, setSelectedItem] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
-
+  const [cartQuantity, setCartQuantity] = useState(0);
   const { user } = useContext(AuthContext);
-
-  const handleLogout = () => {
-    alert("Você foi desconectado.");
-  };
 
   const handleOpenModal = (item) => {
     setSelectedItem(item);
@@ -51,7 +45,6 @@ const Menu = () => {
       })
       .then((data) => {
         if (data.status === "success") {
-          console.log("Lista de categorias e itens:", data.categories);
           setItens(data.categories);
         } else {
           alert(data.message);
@@ -62,16 +55,50 @@ const Menu = () => {
       });
   }, []);
 
+  useEffect(() => {
+    if (user?.id) {
+      fetch("http://localhost/projeto-cardapio/php/listar-carrinho.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ idUsuario: user.id })
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Erro na resposta do servidor.");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          if (data.status === "success") {
+            const pedidos = data.pedidos || [];
+            const totalItems = pedidos.reduce(
+              (acc, item) => acc + parseInt(item.quantidade, 10),
+              0
+            );
+            setCartQuantity(totalItems);
+          } else {
+            console.error(data.message);
+            setCartQuantity(0);
+          }
+        })
+        .catch((error) => {
+          console.error("Erro ao carregar os itens do carrinho:", error);
+        });
+    }
+  }, [modalOpen, user.id]);
+
   return (
     <div className="menu-container">
       <Link to="/carrinho" className="carrinho-btn">
         <IconButton aria-label="cart">
-          <StyledBadge badgeContent={4} color="primary">
+          <StyledBadge badgeContent={cartQuantity} color="primary">
             <ShoppingCartIcon />
           </StyledBadge>
         </IconButton>
       </Link>
-      {console.log("Usuário logado:", user)}
+
       <Link to="/" className="logout-btn">
         <IconButton aria-label="logout" color="gray">
           <LogoutIcon />

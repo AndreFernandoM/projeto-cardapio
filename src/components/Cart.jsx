@@ -1,26 +1,48 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Button, IconButton, TextField, Box, Typography } from "@mui/material";
 import { Add, Remove, Delete } from "@mui/icons-material";
 import "../css/Cart.css";
+import { AuthContext } from "./AuthContext";
 
 const Cart = () => {
-  const [items, setItems] = useState([
-    {
-      name: "Item Exemplo",
-      description: "Descrição do item de exemplo.",
-      price: 19.99,
-      quantity: 1,
-      foto: "https://placehold.co/150"
-    },
+  const [cartQuantity, setCartQuantity] = useState(0);
+  const { user } = useContext(AuthContext);
+  const [items, setItems] = useState([]);
 
-    {
-      name: "Item Exemplo 2",
-      description: "Descrição do item de exemplo blabla.",
-      price: 1.99,
-      quantity: 1,
-      foto: "https://placehold.co/150"
+  useEffect(() => {
+    if (user?.id) {
+      fetch("http://localhost/projeto-cardapio/php/listar-carrinho.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ idUsuario: user.id })
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Erro na resposta do servidor.");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          if (data.status === "success") {
+            const pedidos = data.pedidos || [];
+            const totalItems = pedidos.reduce(
+              (acc, item) => acc + parseInt(item.quantidade, 10),
+              0
+            );
+            setCartQuantity(totalItems);
+            console.log(totalItems, pedidos);
+          } else {
+            console.error(data.message);
+            setCartQuantity(0);
+          }
+        })
+        .catch((error) => {
+          console.error("Erro ao carregar os itens do carrinho:", error);
+        });
     }
-  ]);
+  }, [user.id]);
 
   const handleIncrease = (index) => {
     const newItems = [...items];
@@ -50,8 +72,6 @@ const Cart = () => {
   return (
     <div className="cart-container">
       <div className="cart-card">
-        {" "}
-        {/* Card que envolve as informações */}
         <Typography className="cart-title">Seu Carrinho</Typography>
         {items.length === 0 ? (
           <Typography className="empty-cart">

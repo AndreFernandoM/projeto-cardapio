@@ -5,18 +5,10 @@ import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Menu from "./components/Menu";
 import ForgotPassword from "./components/ForgotPassword";
-import ModalItem from "./components/ModalItem";
 
 import Cart from "./components/Cart";
 import ProtectedRoute from "./components/ProtectedRoute";
 import PublicRoute from "./components/PublicRoute";
-
-const itemTeste = {
-  name: "Item Exemplo",
-  description: "Descrição do item de exemplo.",
-  price: "19.99",
-  foto: "https://via.placeholder.com/150"
-};
 
 const App = () => {
   return (
