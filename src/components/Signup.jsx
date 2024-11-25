@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Typography, Button, TextField } from "@mui/material";
 import "../css/login.css";
+import "../css/signup.css";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -68,8 +69,8 @@ const Signup = () => {
   };
 
   return (
-    <div className="login-container">
-      <div className="login-box">
+    <div className="sigup-container">
+      <div className="sigup-box">
         <Typography variant="h4" className="login-title">
           Cadastro
         </Typography>
@@ -109,6 +110,68 @@ const Signup = () => {
             label="Telefone"
             type="tel"
             value={formData.telefone}
+            onChange={handleChange}
+            required
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            name="cep"
+            label="CEP"
+            value={formData.cep}
+            onChange={handleChange}
+            required
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            name="rua"
+            label="Rua"
+            value={formData.rua}
+            onChange={handleChange}
+            required
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            name="numero"
+            label="Número"
+            value={formData.numero}
+            onChange={handleChange}
+            required
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            name="bairro"
+            label="Bairro"
+            value={formData.bairro}
+            onChange={handleChange}
+            required
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            name="complemento"
+            label="Complemento"
+            value={formData.complemento}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            name="cidade"
+            label="Cidade"
+            value={formData.cidade}
+            onChange={handleChange}
+            required
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            name="estado"
+            label="Estado"
+            value={formData.estado}
             onChange={handleChange}
             required
             fullWidth
