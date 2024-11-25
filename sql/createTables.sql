@@ -28,7 +28,7 @@ CREATE TABLE tb_itens (
     descricao TEXT,
     foto BLOB,
     preco DECIMAL(10, 2) NOT NULL,
-    FOREIGN KEY (idCategoria) REFERENCES tb_categorias(id)
+    FOREIGN KEY (idCategoria) REFERENCES tb_categoria(id)
 );
 
 CREATE TABLE tb_itens_pedido (
