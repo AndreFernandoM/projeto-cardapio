@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { AuthContext } from "./AuthContext";
 
 import "../css/login.css";
+import { Typography } from "@mui/material";
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: "", senha: "" });
@@ -55,7 +56,9 @@ const Login = () => {
   return (
     <div className="login-container">
       <div className="login-box">
-        <h1 className="login-title">Bem-Vindo(a)</h1>
+        <Typography variant="h4" className="login-title">
+          Bem-Vindo(a)
+        </Typography>
         <div className="logo">
           <span></span>
         </div>
@@ -84,14 +87,25 @@ const Login = () => {
             />
           </div>
           <button type="submit" className="login-button">
-            LOGIN
+            <Typography variant="button" fontWeight={700}>
+              LOGIN
+            </Typography>
           </button>
         </form>
         <p className="signup-link">
-          Não possue uma conta? <Link to="/cadastro">Cadastre-se</Link>
+          <Typography variant="subtitle2">
+            Não possue uma conta?
+            <Typography variant="subtitle2">
+              <Link to="/cadastro">Cadastre-se</Link>
+            </Typography>
+          </Typography>
         </p>
         <p className="forgot-password">
-          Esqueci minha senha! <Link to="/esqueci-senha">Recuperar</Link>
+          {" "}
+          <Typography variant="caption">Esqueci minha senha! </Typography>
+          <Typography variant="caption">
+            <Link to="/esqueci-senha">Recuperar</Link>
+          </Typography>
         </p>
       </div>
     </div>

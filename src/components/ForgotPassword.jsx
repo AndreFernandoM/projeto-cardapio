@@ -1,43 +1,55 @@
 import React, { useState } from "react";
+import { Typography, TextField, Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import "../css/login.css";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
+  const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    setEmail(e.target.value);
-  };
+  const handleChange = (e) => setEmail(e.target.value);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("E-mail para recuperação:", email);
-    alert(
-      "Se o e-mail estiver cadastrado, enviaremos instruções para recuperação."
-    );
+    alert("Nova senha enviada por e-mail.");
+
+    navigate("/");
   };
 
   return (
     <div className="login-container">
       <div className="login-box">
-        <h1 className="login-title">Recuperar Senha</h1>
+        <Typography variant="h4" className="login-title">
+          Recuperar Senha
+        </Typography>
         <form onSubmit={handleSubmit}>
-          <div className="input-group">
-            <input
-              type="email"
-              placeholder="Digite seu e-mail"
-              className="login-input"
-              value={email}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <button type="submit" className="login-button">
+          <TextField
+            type="email"
+            label="Digite seu e-mail"
+            value={email}
+            onChange={handleChange}
+            required
+            fullWidth
+            margin="normal"
+          />
+          <Button
+            className="login-button"
+            type="submit"
+            variant="contained"
+            color="primary"
+            fullWidth
+          >
             Enviar
-          </button>
+          </Button>
+          <Button
+            variant="outlined"
+            onClick={() => navigate("/")}
+            fullWidth
+            style={{ marginTop: "10px" }}
+          >
+            Voltar
+          </Button>
         </form>
-        <p className="signup-link">
-          Lembrou a senha? <a href="/">Faça login</a>
-        </p>
       </div>
     </div>
   );
