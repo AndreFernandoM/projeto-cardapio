@@ -3,7 +3,6 @@ import {
   Button,
   IconButton,
   TextField,
-  Box,
   Typography,
   Pagination
 } from "@mui/material";
@@ -11,7 +10,7 @@ import { Add, Remove, Delete } from "@mui/icons-material";
 import "../css/Cart.css";
 import { AuthContext } from "./AuthContext";
 
-const ITEMS_PER_PAGE = 5;
+const ITEMS_PER_PAGE = 4;
 
 const Cart = () => {
   const [cartQuantity, setCartQuantity] = useState(0);
@@ -120,8 +119,30 @@ const Cart = () => {
   };
 
   const handleRemove = (index) => {
-    const newPedidos = pedidos.filter((_, i) => i !== index);
-    setPedidos(newPedidos);
+    const itemToRemove = pedidos[index];
+    fetch("http://localhost/projeto-cardapio/php/deletar-item-carrinho.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        idUsuario: user.id,
+        idItem: itemToRemove.idItem
+      })
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status === "success") {
+          const newPedidos = pedidos.filter((_, i) => i !== index);
+          console.log(newPedidos);
+          setPedidos(newPedidos);
+        } else {
+          console.error("Erro ao deletar item:", data.message);
+        }
+      })
+      .catch((error) => {
+        console.error("Erro na solicitação de remoção do item:", error);
+      });
   };
 
   const calculateTotal = () => {

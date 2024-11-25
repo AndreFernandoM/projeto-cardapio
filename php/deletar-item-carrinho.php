@@ -1,32 +1,68 @@
 <?php
-header('Content-Type: application/json');
 
-$conn = new mysqli("localhost", "root", "", "projeto_cardapio");
+header("Access-Control-Allow-Origin: http://localhost:3000");
+header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type");
+header("Access-Control-Allow-Credentials: true");
 
-if ($conn->connect_error) {
-    echo json_encode(["status" => "error", "message" => "Erro na conexão com o banco de dados"]);
+include 'conn.php';
+
+$data = json_decode(file_get_contents("php://input"), true);
+
+if (!$data) {
+    echo json_encode(["status" => "error", "message" => "Nenhum dado enviado."]);
     exit;
 }
 
-$input = json_decode(file_get_contents("php://input"), true);
+$idUsuario = trim($data['idUsuario'] ?? '');
+$idItem = trim($data['idItem'] ?? '');
 
-$idUsuario = $input['idUsuario'] ?? null;
-$idItem = $input['idItem'] ?? null;
-
-if (!$idUsuario || !$idItem) {
-    echo json_encode(["status" => "error", "message" => "Dados incompletos"]);
+if (empty($idUsuario) || empty($idItem)) {
+    echo json_encode([
+        "status" => "error",
+        "message" => "Dados insuficientes fornecidos."
+    ]);
     exit;
 }
 
-$stmt = $conn->prepare("DELETE FROM carrinho WHERE id_usuario = ? AND id = ?");
-$stmt->bind_param("ii", $idUsuario, $idItem);
+$stmtUsuario = $conn->prepare("SELECT id FROM tb_usuario WHERE id = ?");
+$stmtUsuario->bind_param("i", $idUsuario);
+$stmtUsuario->execute();
+$resultUsuario = $stmtUsuario->get_result();
 
-if ($stmt->execute()) {
-    echo json_encode(["status" => "success", "message" => "Item deletado com sucesso"]);
+if ($resultUsuario->num_rows == 0) {
+    echo json_encode(["status" => "error", "message" => "Usuário não encontrado."]);
+    exit;
+}
+
+$stmtItem = $conn->prepare("
+    SELECT id 
+    FROM tb_itens_pedido 
+    WHERE idUsuario = ? AND idItem = ? AND finalizado = 0
+");
+$stmtItem->bind_param("ii", $idUsuario, $idItem);
+$stmtItem->execute();
+$resultItem = $stmtItem->get_result();
+
+if ($resultItem->num_rows == 0) {
+    echo json_encode(["status" => "error", "message" => "Item não encontrado no carrinho."]);
+    exit;
+}
+
+$stmtDelete = $conn->prepare("
+    DELETE FROM tb_itens_pedido 
+    WHERE idUsuario = ? AND idItem = ? AND finalizado = 0
+");
+$stmtDelete->bind_param("ii", $idUsuario, $idItem);
+
+if ($stmtDelete->execute()) {
+    echo json_encode(["status" => "success", "message" => "Item removido com sucesso."]);
 } else {
-    echo json_encode(["status" => "error", "message" => "Erro ao deletar item"]);
+    echo json_encode(["status" => "error", "message" => "Erro ao remover item: " . $conn->error]);
 }
 
-$stmt->close();
+$stmtUsuario->close();
+$stmtItem->close();
+$stmtDelete->close();
 $conn->close();
 ?>
