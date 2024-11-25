@@ -9,6 +9,7 @@ import {
 import { Add, Remove, Delete } from "@mui/icons-material";
 import "../css/Cart.css";
 import { AuthContext } from "./AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const ITEMS_PER_PAGE = 4;
 
@@ -17,6 +18,7 @@ const Cart = () => {
   const [pedidos, setPedidos] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (user?.id) {
@@ -34,6 +36,7 @@ const Cart = () => {
           return response.json();
         })
         .then((data) => {
+          console.log("Dados recebidos:", data);
           if (data.status === "success") {
             const pedidosAtualizados = data.pedidos || [];
             setPedidos(pedidosAtualizados);
@@ -53,6 +56,14 @@ const Cart = () => {
         });
     }
   }, [user?.id]);
+
+  useEffect(() => {
+    const totalItems = pedidos.reduce(
+      (acc, item) => acc + parseInt(item.quantity, 10),
+      0
+    );
+    setCartQuantity(totalItems);
+  }, [pedidos]);
 
   const handleIncrease = (index) => {
     const newPedidos = [...pedidos];
@@ -115,6 +126,8 @@ const Cart = () => {
         .catch((error) => {
           console.error("Erro ao atualizar a quantidade no backend:", error);
         });
+    } else {
+      console.error("A quantidade mínima é 1.");
     }
   };
 
@@ -134,7 +147,6 @@ const Cart = () => {
       .then((data) => {
         if (data.status === "success") {
           const newPedidos = pedidos.filter((_, i) => i !== index);
-          console.log(newPedidos);
           setPedidos(newPedidos);
         } else {
           console.error("Erro ao deletar item:", data.message);
@@ -142,6 +154,29 @@ const Cart = () => {
       })
       .catch((error) => {
         console.error("Erro na solicitação de remoção do item:", error);
+      });
+  };
+
+  const handleConfirm = () => {
+    fetch("http://localhost/projeto-cardapio/php/finalizador-carrinho.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ idUsuario: user.id })
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status === "success") {
+          alert("Compra realizada com sucesso");
+          navigate("/menu");
+          setPedidos([]);
+        } else {
+          console.error(data.message);
+        }
+      })
+      .catch((error) => {
+        console.error("Erro ao finalizar carrinho:", error);
       });
   };
 
@@ -193,7 +228,7 @@ const Cart = () => {
                     </Typography>
                     <div className="cart-item-quantity">
                       <IconButton
-                        onClick={() => handleDecrease(index + startIndex)}
+                        onClick={() => handleDecrease(index)}
                         color="primary"
                       >
                         <Remove />
@@ -208,16 +243,15 @@ const Cart = () => {
                         }}
                       />
                       <IconButton
-                        onClick={() => handleIncrease(index + startIndex)}
+                        onClick={() => handleIncrease(index)}
                         color="primary"
                       >
                         <Add />
                       </IconButton>
                     </div>
                     <IconButton
-                      onClick={() => handleRemove(index + startIndex)}
+                      onClick={() => handleRemove(index)}
                       color="error"
-                      className="cart-item-remove"
                     >
                       <Delete />
                     </IconButton>
@@ -246,6 +280,7 @@ const Cart = () => {
             variant="contained"
             color="primary"
             className="cart-confirm-btn"
+            onClick={handleConfirm}
           >
             <Typography variant="button">Confirmar Pedido</Typography>
           </Button>
